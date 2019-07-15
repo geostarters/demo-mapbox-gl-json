@@ -35,7 +35,7 @@
 				style: 'https://geoserveis.icgc.cat/contextmaps/icgc.json', //more styles at https://openicgc.github.io/
 				center: [2.16859, 41.3954],
 				zoom: 13,
-				maxZoom: 14,
+				maxZoom: 17,
 				hash: true,
 				pitch: 45
 			});
@@ -63,6 +63,27 @@
 					"data": "http://test.com/exemple.geojson"
 				});
 				*/
+
+				//dem layer 
+				map.addSource("dem", {
+    				"type": "raster-dem",
+    				"tiles": ["https://tilemaps.icgc.cat/tileserver/tileserver.php/mapboxTerrain/{z}/{x}/{y}.png"]
+				});
+
+				map.addLayer({
+					"id": "hillshading",
+					"source": "dem",
+					"type": "hillshade",
+					"paint": {
+						"hillshade-illumination-anchor": "map",
+						"hillshade-exaggeration": 1,
+						"hillshade-highlight-color": "rgba(175, 175, 175, 1)",
+						"hillshade-shadow-color": "rgba(0, 0, 0, 0.65)",
+						"hillshade-accent-color": "rgba(255, 255, 255, 1)",
+						"hillshade-illumination-direction": 0
+					}
+					// insert below landcover-glacier;
+				}, 'landcover-glacier');
 
 				map.addLayer({
 					"id": "demo-geojson-polygon",
