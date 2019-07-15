@@ -1,0 +1,83 @@
+<html>
+	<head>
+		<meta charset='utf-8' />
+		<title>Vector-Tiles ICGC</title>
+		<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+		<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.1.0/mapbox-gl.js'></script>
+		<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.1.0/mapbox-gl.css' rel='stylesheet' />
+
+		<style>
+			
+			body {
+				margin: 0;
+				padding: 0;
+			}
+	
+			#map {
+				position: absolute;
+				top: 0;
+				bottom: 0;
+				width: 100%;
+				height: 100%
+			}
+	
+
+		</style>
+	
+	</head>
+	
+	<body>
+
+		<div id="map"></div>
+		<script>
+			const map = new mapboxgl.Map({
+				container: 'map',
+				style: 'https://geoserveis.icgc.cat/contextmaps/icgc.json', //more styles at https://openicgc.github.io/
+				center: [2.16859, 41.3954],
+				zoom: 13,
+				maxZoom: 14,
+				hash: true,
+				pitch: 45
+			});
+	
+			map.on('load', function () {
+	
+				map.addControl(new mapboxgl.NavigationControl());
+				map.addControl(new mapboxgl.GeolocateControl({
+					positionOptions: {
+						enableHighAccuracy: true,
+						watchPosition: true
+					}
+				}));
+
+				//local file
+				map.addSource("demo-json", {
+					"type": "geojson",
+					"data": "./example.geojson"
+				});
+
+				/*
+				//external file URL
+				map.addSource("", {
+					"type": "geojson",
+					"data": "http://test.com/exemple.geojson"
+				});
+				*/
+
+				map.addLayer({
+					"id": "demo-geojson-polygon",
+					"type": "fill",
+					"source": "demo-json",
+					"paint": {
+						"fill-color": "#FF0000",
+						"fill-opacity": 0.4
+					},
+					"filter": ["==", "$type", "Polygon"]
+				});
+
+			});
+	
+		</script>
+	</body>
+	
+</html>
